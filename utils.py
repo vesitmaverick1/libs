@@ -1,3 +1,35 @@
+def karatsuba(num1: int, num2: int) -> int:
+    """
+    Multiplies two large numbers using the Karatsuba algorithm.
+    Time Complexity: O(N^1.58)
+    Example Usage (Python natively casts strings to large ints for this math):
+    val1 = 123456789123456789
+    val2 = 987654321987654321
+    print(karatsuba(val1, val2))
+    """
+    # Base case for small numbers
+    if num1 < 10 or num2 < 10:
+        return num1 * num2
+        
+    # Calculate the size of the numbers
+    n = max(len(str(num1)), len(str(num2)))
+    half = n // 2
+    
+    # Split the digit sequences in the middle
+    # Example: 1234 -> a = 12, b = 34
+    a = num1 // (10 ** half)
+    b = num1 % (10 ** half)
+    c = num2 // (10 ** half)
+    d = num2 % (10 ** half)
+    
+    # Recursively calculate the 3 required products
+    ac = karatsuba(a, c)
+    bd = karatsuba(b, d)
+    ad_plus_bc = karatsuba(a + b, c + d) - ac - bd
+    
+    # Recompose the final result using the Karatsuba formula
+    return (ac * (10 ** (2 * half))) + (ad_plus_bc * (10 ** half)) + bd
+
 def sum_large_strings(num1: str, num2: str) -> str:
     """
     Sums two incredibly large integers represented as strings.
